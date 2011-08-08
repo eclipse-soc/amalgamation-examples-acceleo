@@ -1,19 +1,66 @@
 [comment encoding = UTF-8 /]
 [module layout('http://www.xtext.org/example/droid/Droid')/]
 
-[template public layout(aLayout : Layout)]
-	[file (aLayout.name.concat('.xml'), false, 'UTF-8')]
+[template public generateLayout(aLayout : Layout)]
+[file ('res/layout/'.concat(aLayout.name.toLower().concat('.xml')), false, 'UTF-8')]
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+[aLayout.generateXMLNode(true)/]
+[/file]
+[/template]
+
+
+[template private generateXMLNode(view : View) ]
+	[comment This should not be called /]
+	<!-- This is an abstract template and should not be called -->
+[/template]
+
+[template private generateXMLNode(aLayout : Layout) ]
+[aLayout.generateXMLNode(false)/]
+[/template]
+
+[template private generateXMLNode(aLayout : Layout, isRootNode : Boolean) ]
+<[aLayout.getLayoutKind()/] [if (isRootNode)]xmlns:android="http://schemas.android.com/apk/res/android"[/if]
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
+[aLayout.views.generateWidgets()/]
+</[aLayout.getLayoutKind()/]>
+[/template]
+
+[template private generateXMLNode(widget : Widget) ]
+	[comment This should not be called /]
+	<!-- This is an abstract template and should not be called -->
+[/template]
+
+[template private generateXMLNode(widget : TextView) ]
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:text="@string/hello"
     />
-</LinearLayout>
-	[/file]
 [/template]
+
+[template private generateXMLNode(widget : Button) ]
+	[comment TODO Auto-generated template stub/]
+[/template]
+
+[template private generateXMLNode(widget : ImageView) ]
+	[comment TODO Auto-generated template stub/]
+[/template]
+
+[template private generateXMLNode(widget : Spinner) ]
+	[comment TODO Auto-generated template stub/]
+[/template]
+
+[template private generateXMLNode(widget : EditText) ]
+	[comment TODO Auto-generated template stub/]
+[/template]
+
+[template private generateWidgets (aViewCollection : ViewCollection) ]
+[for (view : View | aViewCollection.views)]
+[view.generateXMLNode()/]
+[/for]
+[/template]
+
+[query public getLayoutKind(layout : Layout) : String = if(layout.isRelative) then 'RelativeLayout' else 'LinearLayout' endif  /]

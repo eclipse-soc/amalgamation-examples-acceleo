@@ -2,6 +2,7 @@
 [module main('http://www.xtext.org/example/droid/Droid')]
 [import org::acceleo::example::droid::files::application /]
 [import org::acceleo::example::droid::files::screen /]
+[import org::acceleo::example::droid::files::layout /]
 
 [template public main(aApplication : Application)]
 [comment @main/]
@@ -9,5 +10,9 @@
 
 	[for (aScreen : Screen | aApplication.screens)]
 		[aScreen.generateScreen()/]
+	[/for]
+
+	[for (aLayout : Layout | aApplication.layouts)]
+		[aLayout.generateLayout()/]
 	[/for]
 [/template]

@@ -1,8 +1,13 @@
 [comment encoding = UTF-8 /]
 [module main('http://www.xtext.org/example/droid/Droid')]
 [import org::acceleo::example::droid::files::application /]
+[import org::acceleo::example::droid::files::screen /]
 
 [template public main(aApplication : Application)]
 [comment @main/]
 	[aApplication.generateManifestFile()/]
+
+	[for (aScreen : Screen | aApplication.screens)]
+		[aScreen.generateScreen()/]
+	[/for]
 [/template]

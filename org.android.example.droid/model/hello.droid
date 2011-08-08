@@ -1,0 +1,18 @@
+//From: http://developer.android.com/resources/tutorials/hello-world.html
+
+application "Hello, Droid" => org.android.example.droid
+
+hello = "Hello Droid!"
+
+screen Main {
+	show main
+}
+
+layout main {
+	# textView text_view string(hello) {
+		layout: {
+			width: fill_parent;
+			height: fill_parent;
+		}
+	}
+}

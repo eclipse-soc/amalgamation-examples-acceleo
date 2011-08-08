@@ -1,0 +1,7 @@
+[comment encoding = UTF-8 /]
+[module main('http://www.xtext.org/example/droid/Droid')]
+
+
+[template public main(aApplication : Application)]
+[comment @main/]
+[/template]

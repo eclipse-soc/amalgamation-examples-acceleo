@@ -48,6 +48,12 @@
             </intent-filter>
         </activity>
 
+[if (aApplication.screens->size() > 1)]
+	[for (screen : Screen | aApplication.screens->subOrderedSet(2, aApplication.screens->size()))]
+		<activity android:name=".[screen.name.toUpperFirst()/]Activity"></activity>	
+	[/for]
+[/if]
+
     </application>
 </manifest>
 [/file]

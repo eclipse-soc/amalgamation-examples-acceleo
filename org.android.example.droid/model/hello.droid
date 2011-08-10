@@ -15,4 +15,12 @@ layout main {
 			height: fill_parent;
 		}
 	}
+
+	# button "Next" { }
+}
+
+screen Second {
+	# layout second {
+		# button "Back" { }
+	}
 }

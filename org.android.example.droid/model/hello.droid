@@ -17,11 +17,17 @@ layout main {
 		width: 50px;
 	}
 
-	# button "Next" { }
+	# button "Next" {
+		onClick: invoke Second;
+	}
 }
 
 screen Second {
 	# layout second {
-		# button "Back" { }
+		# button back "Back" to Main { }
+
+		# button url "LoadURL" {
+			onClick: goTo "http://developer.android.com";
+		}
 	}
 }

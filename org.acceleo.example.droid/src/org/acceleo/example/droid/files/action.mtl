@@ -1,0 +1,26 @@
+[comment encoding = UTF-8 /]
+[module action('http://www.xtext.org/example/droid/Droid')]
+
+[template public generateCallback(action : Action) post (trim())]
+//[action.eContainer(View).eClass().name/]([action.eContainer(View).name/]) onClick
+public void [action.eContainer(View).name/]_[action.eContainingFeature().name/](View view) {
+    [action.actionCode()/]
+}
+[/template]
+
+
+[template private actionCode(action : Action) ]
+//This is an abstract template and should not be called
+[/template]
+
+[template private actionCode(action : GoToURLAction) ]
+startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("[action.url/]")));
+[/template]
+
+[template private actionCode(action : ShowLayoutAction) ]
+setContentView(R.layout.[action.layout.name/]);
+[/template]
+
+[template private actionCode(action : InvokeScreenAction) ]
+startActivityForResult(new Intent(view.getContext(), [action.screen.name.toUpperFirst()/]Activity.class), 0);
+[/template]

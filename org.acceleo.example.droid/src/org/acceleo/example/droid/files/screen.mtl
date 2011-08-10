@@ -17,7 +17,22 @@ public class [aScreen.name.toUpperFirst()/]Activity extends Activity {
 [if (aScreen.layout <> null)]
 		setContentView(R.layout.[aScreen.layout.name/]);
 [/if]
+[if (aScreen.widgets <> null)]
+		setContentView(R.layout.[aScreen.name.toLower()/]_screen);
+[/if]
     }
 }
 [/file]
+[/template]
+
+[import org::acceleo::example::droid::files::layout /]
+
+[template public generateLayout(screen : Screen)]
+[if (screen.widgets <> null)]
+  [if screen.widgets.views->size() = 1 and screen.widgets.views->first().oclIsKindOf(Layout) ]
+    [screen.widgets.views->first().oclAsType(Layout).generateLayout(screen.name.toLower().concat('_screen'))/]
+  [else]
+    [screen.widgets.generateLayout(screen.name.toLower().concat('_screen'))/]
+  [/if]
+[/if]
 [/template]

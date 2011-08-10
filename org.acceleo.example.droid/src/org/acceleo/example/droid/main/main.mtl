@@ -12,6 +12,7 @@
 
 	[for (aScreen : Screen | aApplication.screens)]
 		[aScreen.generateScreen()/]
+		[aScreen.generateLayout()/]
 	[/for]
 
 	[for (aLayout : Layout | aApplication.layouts)]

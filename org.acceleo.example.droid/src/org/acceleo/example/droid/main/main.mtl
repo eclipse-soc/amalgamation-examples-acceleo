@@ -3,10 +3,12 @@
 [import org::acceleo::example::droid::files::application /]
 [import org::acceleo::example::droid::files::screen /]
 [import org::acceleo::example::droid::files::layout /]
+[import org::acceleo::example::droid::files::resource /]
 
 [template public main(aApplication : Application)]
 [comment @main/]
 	[aApplication.generateManifestFile()/]
+	[aApplication.generateResourceFiles()/]
 
 	[for (aScreen : Screen | aApplication.screens)]
 		[aScreen.generateScreen()/]

@@ -1,12 +1,127 @@
 [comment encoding = UTF-8 /]
-[module resource('http://www.xtext.org/example/droid/Droid')/]
+[module resource('http://www.xtext.org/example/droid/Droid', 'http://www.eclipse.org/emf/2002/Ecore') /]
 
-[template public resource(aResource : Resource)]
-	[file (aResource.name.concat('.xml'), false, 'UTF-8')]
+[template public generateResourceFiles(app : Application)]
+	[app.stringResourceFile()/]
+	[generateResourceFiles(app.resources->asOrderedSet())/]
+[/template]
+
+[template private generateResourceFiles(resources : OrderedSet(Resource) )]
+	[stringResourceFile(resources->filter(StringResource))/]
+	[integerResourceFile(resources->filter(IntegerResource))/]
+	[booleanResourceFile(resources->filter(BooleanResource))/]
+	[colorResourceFile(resources->filter(ColorResource))/]
+	[dimensionResourceFile(resources->filter(DimensionResource))/]
+	[integerArrayResourceFile(resources->filter(IntegerArrayResource))/]
+	[stringArrayResourceFile(resources->filter(StringArrayResource))/]
+[/template]
+
+
+
+[template private stringResourceFile (app : Application) ]
+[file ('res/values/gen-app-strings.xml', false, 'UTF-8')]
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, MainActivity!</string>
-    <string name="app_name">Hello Droid</string>
+  <string name="app_name">[app.name/]</string>
+</resources>
+[/file]
+[/template]
+
+[template private stringResourceFile (resources : OrderedSet(StringResource)) ]
+[if (resources->size() > 0)]
+	[file ('res/values/gen-strings.xml', false, 'UTF-8')]
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+		[for (resource : StringResource | resources) ]
+  <string name="[resource.name/]">[resource.value/]</string>
+		[/for]
 </resources>
 	[/file]
+[/if]
+[/template]
+
+[template private integerResourceFile (resources : OrderedSet(IntegerResource)) ]
+[if (resources->size() > 0)]
+	[file ('res/values/gen-integers.xml', false, 'UTF-8')]
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+		[for (resource : IntegerResource | resources)]
+  <integer name="[resource.name/]">[resource.value/]</integer>
+		[/for]
+</resources>
+	[/file]
+[/if]
+[/template]
+
+[template private booleanResourceFile (resources : OrderedSet(BooleanResource)) ]
+[if (resources->size() > 0)]
+	[file ('/res/values/gen-bools.xml', false, 'UTF-8')]
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+		[for (resource : BooleanResource | resources)]
+  <bool name="[resource.name/]">[resource.value.toLower()/]</bool>
+		[/for]
+</resources>
+	[/file]
+[/if]
+[/template]
+
+[template private colorResourceFile (resources : OrderedSet(ColorResource)) ]
+[if (resources->size() > 0)]
+	[file ('/res/values/gen-colors.xml', false, 'UTF-8')]
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+		[for (resource : ColorResource | resources)]
+  <color name="[resource.name/]">[resource.value/]</color>
+		[/for]
+</resources>
+	[/file]
+[/if]
+[/template]
+
+[template private dimensionResourceFile (resources : OrderedSet(DimensionResource)) ]
+[if (resources->size() > 0)]
+	[file ('/res/values/gen-dimensions.xml', false, 'UTF-8')]
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+		[for (resource : DimensionResource | resources)]
+  <dimen name="[resource.name/]">[resource.value/]</dimen>
+		[/for]
+</resources>
+	[/file]
+[/if]
+[/template]
+
+[template private integerArrayResourceFile (resources : OrderedSet(IntegerArrayResource)) ]
+[if (resources->size() > 0)]
+	[file ('/res/values/gen-integer-arrays.xml', false, 'UTF-8')]
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+		[for (array : IntegerArrayResource | resources)]
+  <integer-array name="[array.name/]">
+			[for (item : EInt | array.items)]
+	<item>[item.toString()/]</item>
+			[/for]
+  </integer-array>
+		[/for]
+</resources>
+	[/file]
+[/if]
+[/template]
+
+[template private stringArrayResourceFile (resources : OrderedSet(StringArrayResource)) ]
+[if (resources->size() > 0)]
+	[file ('/res/values/gen-string-arrays.xml', false, 'UTF-8')]
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+		[for (array : StringArrayResource | resources)]
+  <string-array name="[array.name/]">
+			[for (item : EString | array.items)]
+	<item>[item.toString()/]</item>
+			[/for]
+  </string-array>
+		[/for]
+</resources>
+	[/file]
+[/if]
 [/template]

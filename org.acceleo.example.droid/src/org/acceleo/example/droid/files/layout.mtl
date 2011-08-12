@@ -8,41 +8,41 @@
 [template public generateLayout(aLayout : Layout, fileName : String)]
 [file ('res/layout/'.concat(fileName.toLower()).concat('.xml'), false, 'UTF-8')]
 <?xml version="1.0" encoding="utf-8"?>
-[aLayout.generateXMLNode(true)/]
+[generateLayoutNode(aLayout.getLayoutKind(), aLayout.views, true)/]
 [/file]
 [/template]
 
-[template public generateLayout (aViewCollection : ViewCollection, fileName : String) ]
+[template public generateLayout(aViewCollection : ViewCollection, fileName : String) ]
 [file ('res/layout/'.concat(fileName.toLower()).concat('.xml'), false, 'UTF-8')]
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+[generateLayoutNode('LinearLayout', aViewCollection, true)/]
+[/file]
+[/template]
+
+
+[template private generateLayoutNode(layoutKind : String, subViews : ViewCollection, isRootNode : Boolean) ]
+<[layoutKind/]
+[if (isRootNode)]
+    xmlns:android="http://schemas.android.com/apk/res/android"
+[/if]
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-[aViewCollection.generateWidgets()/]
-</LinearLayout>
-[/file]
+[subViews.generateWidgets()/]
+</[layoutKind/]>
 [/template]
 
 [template private generateXMLNode(view : View) ]
-	[comment This should not be called /]
-	<!-- This is an abstract template and should not be called -->
+[comment This should not be called /]
+<!-- This is an abstract template and should not be called -->
 [/template]
 
 [template private generateXMLNode(aLayout : Layout) ]
-[aLayout.generateXMLNode(false)/]
+[generateLayoutNode(aLayout.getLayoutKind(), aLayout.views, false)/]
 [/template]
 
-[template private generateXMLNode(aLayout : Layout, isRootNode : Boolean) ]
-<[aLayout.getLayoutKind()/] [if (isRootNode)]xmlns:android="http://schemas.android.com/apk/res/android"[/if]
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-[aLayout.views.generateWidgets()/]
-</[aLayout.getLayoutKind()/]>
-[/template]
+
 
 [template private generateXMLNode(widget : Widget) ]
 	[comment This should not be called /]
@@ -74,9 +74,7 @@
 [/template]
 
 [template private generateWidgets (aViewCollection : ViewCollection) ]
-[for (view : View | aViewCollection.views)]
-[view.generateXMLNode()/]
-[/for]
+[aViewCollection.views.generateXMLNode()/]
 [/template]
 
 [query public getLayoutKind(layout : Layout) : String = if(layout.isRelative) then 'RelativeLayout' else 'LinearLayout' endif  /]

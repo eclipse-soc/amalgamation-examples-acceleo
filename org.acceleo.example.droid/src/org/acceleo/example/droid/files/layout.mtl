@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module layout('http://www.xtext.org/example/droid/Droid')/]
+[import org::acceleo::example::droid::files::widget /]
 
 [template public generateLayout(aLayout : Layout)]
 [aLayout.generateLayout(aLayout.name)/]
@@ -8,73 +9,28 @@
 [template public generateLayout(aLayout : Layout, fileName : String)]
 [file ('res/layout/'.concat(fileName.toLower()).concat('.xml'), false, 'UTF-8')]
 <?xml version="1.0" encoding="utf-8"?>
-[generateLayoutNode(aLayout.getLayoutKind(), aLayout.views, true)/]
+[generateViewNode(aLayout)/]
 [/file]
 [/template]
 
 [template public generateLayout(aViewCollection : ViewCollection, fileName : String) ]
 [file ('res/layout/'.concat(fileName.toLower()).concat('.xml'), false, 'UTF-8')]
 <?xml version="1.0" encoding="utf-8"?>
-[generateLayoutNode('LinearLayout', aViewCollection, true)/]
+[generateLayoutNode(aViewCollection)/]
 [/file]
 [/template]
 
 
-[template private generateLayoutNode(layoutKind : String, subViews : ViewCollection, isRootNode : Boolean) ]
-<[layoutKind/]
-[if (isRootNode)]
-    xmlns:android="http://schemas.android.com/apk/res/android"
-[/if]
+[template private generateLayoutNode(collection : ViewCollection) ]
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-[subViews.generateWidgets()/]
-</[layoutKind/]>
-[/template]
-
-[template private generateXMLNode(view : View) ]
-[comment This should not be called /]
-<!-- This is an abstract template and should not be called -->
-[/template]
-
-[template private generateXMLNode(aLayout : Layout) ]
-[generateLayoutNode(aLayout.getLayoutKind(), aLayout.views, false)/]
-[/template]
-
-
-
-[template private generateXMLNode(widget : Widget) ]
-	[comment This should not be called /]
-	<!-- This is an abstract template and should not be called -->
-[/template]
-
-[template private generateXMLNode(widget : TextView) ]
-<TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/hello"
-    />
-[/template]
-
-[template private generateXMLNode(widget : Button) ]
-	[comment TODO Auto-generated template stub/]
-[/template]
-
-[template private generateXMLNode(widget : ImageView) ]
-	[comment TODO Auto-generated template stub/]
-[/template]
-
-[template private generateXMLNode(widget : Spinner) ]
-	[comment TODO Auto-generated template stub/]
-[/template]
-
-[template private generateXMLNode(widget : EditText) ]
-	[comment TODO Auto-generated template stub/]
-[/template]
-
-[template private generateWidgets (aViewCollection : ViewCollection) ]
-[aViewCollection.views.generateXMLNode()/]
+[for (view : View | collection.views)]
+	[view.generateViewNode()/]
+[/for]
+</LinearLayout>
 [/template]
 
 [query public getLayoutKind(layout : Layout) : String = if(layout.isRelative) then 'RelativeLayout' else 'LinearLayout' endif  /]

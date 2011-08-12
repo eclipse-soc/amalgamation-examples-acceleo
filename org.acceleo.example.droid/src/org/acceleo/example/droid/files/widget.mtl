@@ -1,0 +1,56 @@
+[comment encoding = UTF-8 /]
+[module widget('http://www.xtext.org/example/droid/Droid', 'http://www.eclipse.org/emf/2002/Ecore')]
+
+[template public generateViewNode(view : View) post(trim()) ]
+[view.generateViewNode(null) /]
+[/template]
+
+[template public generateViewNode(layout : Layout) post(trim()) ]
+[layout.generateViewNode(layout.views) /]
+[/template]
+
+[template private generateViewNode(view : View, subViews: ViewCollection) post(trim()) ]
+<[view.nodeTagName()/]
+[if (view.isRootNode())]
+    xmlns:android="http://schemas.android.com/apk/res/android"
+[/if]
+[if (view.name <> null)]
+    android:id="@+id/[view.name/]"
+[/if]
+    [view.defaultLayoutProperties()/]
+[if (subViews <> null)]
+    >
+[for (view : View | subViews.views)]
+    [view.generateViewNode()/]
+[/for]
+</[view.nodeTagName()/]>
+[else]
+/>
+[/if]
+[/template]
+
+
+
+[template private defaultLayoutProperties(view : View) ]
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+[/template]
+
+[template private defaultLayoutProperties(view : TextView) ]
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+[/template]
+
+[template private defaultLayoutProperties(view : Layout) ]
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+[/template]
+
+
+[query public nodeTagName(view : View) : String = if view.oclIsKindOf(Layout) then view.oclAsType(Layout).getLayoutKind() else view.eClass().name endif /]
+
+[query public getLayoutKind(layout : Layout) : String = if(layout.isRelative) then 'RelativeLayout' else 'LinearLayout' endif  /]
+
+[query public isRootNode(view : View) : Boolean = view.oclIsKindOf(Layout) and view.oclAsType(Layout).isRootNode() /]
+[query public isRootNode(layout : Layout) : Boolean = layout.eContainer().oclIsTypeOf(Application) or ( layout.eContainer().oclIsTypeOf(ViewCollection) and layout.eContainer(ViewCollection).views->size() = 1) /]

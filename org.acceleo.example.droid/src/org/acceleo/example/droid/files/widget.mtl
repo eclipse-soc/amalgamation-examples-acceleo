@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module widget('http://www.xtext.org/example/droid/Droid', 'http://www.eclipse.org/emf/2002/Ecore')]
 [import org::acceleo::example::droid::files::value_access /]
+[import org::acceleo::example::droid::files::action /]
 
 [template public generateViewNode(view : View) post(trim()) ]
 [view.generateViewNode(null) /]
@@ -46,7 +47,12 @@
 [for (va : ValueAccess | view.eContents(ValueAccess))]
 [va.generateValueAccess()/]
 [/for]
+[for (action : Action | view.eContents(Action))]
+[action.generateProperty()/]
+[/for]
 [/template]
+
+
 
 
 [template private defaultLayoutProperties(view : View) ]

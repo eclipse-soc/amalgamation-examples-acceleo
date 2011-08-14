@@ -21,5 +21,6 @@
         android:layout_height="wrap_content"
         
     	android:text="Next"
+    	android:onClick="_onClick"
     />
 </LinearLayout>

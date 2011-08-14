@@ -1,6 +1,11 @@
 [comment encoding = UTF-8 /]
 [module action('http://www.xtext.org/example/droid/Droid')]
 
+
+[template public generateProperty(action : Action) ]
+android:[action.eContainingFeature().name/]="[action.eContainer(View).name/]_[action.eContainingFeature().name/]"
+[/template]
+
 [template public generateCallback(action : Action) post (trim())]
 //[action.eContainer(View).eClass().name/]([action.eContainer(View).name/]) onClick
 public void [action.eContainer(View).name/]_[action.eContainingFeature().name/](View view) {

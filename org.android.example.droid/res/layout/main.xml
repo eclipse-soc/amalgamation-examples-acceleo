@@ -5,14 +5,21 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    
+	
     >
     <TextView
         android:id="@+id/text_view"
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        
+    	android:width="50px"
+    	android:text="@string/hello"
     />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        
+    	android:text="Next"
     />
 </LinearLayout>

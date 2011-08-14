@@ -11,9 +11,10 @@ screen Main {
 layout main {
 	# textView text_view string(hello) {
 		layout: {
-			width: fill_parent;
-			height: fill_parent;
+			width: match_parent;
+			height: wrap_content;
 		}
+		width: 50px;
 	}
 
 	# button "Next" { }

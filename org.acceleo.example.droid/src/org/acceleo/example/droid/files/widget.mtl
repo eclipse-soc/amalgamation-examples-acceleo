@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module widget('http://www.xtext.org/example/droid/Droid', 'http://www.eclipse.org/emf/2002/Ecore')]
+[import org::acceleo::example::droid::files::value_access /]
 
 [template public generateViewNode(view : View) post(trim()) ]
 [view.generateViewNode(null) /]
@@ -17,7 +18,8 @@
 [if (view.name <> null)]
     android:id="@+id/[view.name/]"
 [/if]
-    [view.defaultLayoutProperties()/]
+    [view.generateLayoutProperties()/]
+	[view.generateViewProperties()/]
 [if (subViews <> null)]
     >
 [for (view : View | subViews.views)]
@@ -29,6 +31,22 @@
 [/if]
 [/template]
 
+
+[template private generateLayoutProperties (aView : View) ]
+[if (aView.layoutProperties.oclIsUndefined())]
+[aView.defaultLayoutProperties()/]
+[else]
+[for (va : ValueAccess | aView.layoutProperties.eContents(ValueAccess))]
+[va.generateValueAccess()/]
+[/for]
+[/if]
+[/template]
+
+[template private generateViewProperties(view : View) post(trim()) ]
+[for (va : ValueAccess | view.eContents(ValueAccess))]
+[va.generateValueAccess()/]
+[/for]
+[/template]
 
 
 [template private defaultLayoutProperties(view : View) ]

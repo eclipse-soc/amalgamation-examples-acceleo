@@ -1,0 +1,59 @@
+[comment encoding = UTF-8 /]
+[module value_access('http://www.xtext.org/example/droid/Droid')]
+
+
+[template public generateValueAccess(va : ValueAccess) ]
+android:[va.eContainingFeature().name/]="[va.generateValue()/]"
+[/template]
+
+[template private generateValue(arg : ValueAccess) ]
+[comment Abstract template. Should not be called /]
+[/template]
+
+[template private generateValue(va : ColorVA) ]
+[va.value/]
+[/template]
+
+[template private generateValue(va : ColorRA) ]
+@color/[va.resource.name/]
+[/template]
+
+[template private generateValue(va : DrawableRA) ]
+@drawable/[va.resource.name/]
+[/template]
+
+[template private generateValue(va : StringVA) ]
+[va.value/]
+[/template]
+
+[template private generateValue(va : StringRA) ]
+@string/[va.resource.name/]
+[/template]
+
+[template private generateValue(va : IntegerVA) ]
+[va.value.toString()/]
+[/template]
+
+[template private generateValue(va : IntegerRA) ]
+@integer/[va.resource.name/]
+[/template]
+
+[template private generateValue(va : BooleanVA) ]
+[va.value.toString().toLower()/]
+[/template]
+
+[template private generateValue(va : BooleanRA) ]
+@bool/[va.resource.name/]
+[/template]
+
+[template private generateValue(va : DimensionVA) ]
+[if (va.value.oclIsUndefined())][va.const_value/][else][va.value/][/if]
+[/template]
+
+[template private generateValue(va : DimensionRA) ]
+@dimen/[va.resource.name/]
+[/template]
+
+[template private generateValue(va : LayoutDimensionVA) ]
+[const_value/]
+[/template]
